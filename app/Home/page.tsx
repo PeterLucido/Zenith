@@ -4,6 +4,7 @@ import Header from "../components/header";
 import RightPhoto from '../components/rightphoto';
 import LeftPhoto from '../components/leftphoto';
 import ButtonComponent from '../components/callbutton';
+import Image from 'next/image';
 
 export default function Home() {
   const videoRef = useRef<HTMLVideoElement>(null);
@@ -39,16 +40,28 @@ export default function Home() {
     }
   }, []);
 
+  const isMobile = /iPhone|iPad|iPod|Android/i.test(navigator.userAgent);
+
   return (
     <main className="flex min-h-screen flex-col items-center justify-between p-24 relative">
       <video
         ref={videoRef}
-        className="fixed top-0 left-0 w-full h-full object-cover z-[-1]"
+        className={`fixed top-0 left-0 w-full h-full object-cover z-[-1] ${isMobile ? 'pointer-events-none' : ''}`}
         src="/BackgroundVideo2.mp4"
         muted
+        playsInline
       >
         Your browser does not support the video tag.
       </video>
+      {isMobile && (
+        <Image
+        id="fallback-image"
+        src="/EVELO.png"
+        alt="Background Image"
+        layout="fill"
+        objectFit="cover"
+      />
+      )}
       <Header />
       <div className="fixed top-0 left-0 w-full h-full bg-black opacity-40 z-[-1]"></div>
       <section className="relative z-10 flex flex-col items-center justify-center h-full text-white mt-28">
@@ -58,35 +71,35 @@ export default function Home() {
         <div style={{ height: '45vh' }}></div>
       </section>
       <div className="p-4">
-      <RightPhoto
-        title="Streamline Your Business with Our SaaS Platform"
-        description="Our all-in-one SaaS platform helps you manage your business efficiently, from customer relationships to financial reporting. Experience the power of seamless integration and automation."
-        buttonText="Get Started"
-        buttonLink="#"
-        imageSrc="/Zenith.png"
-        imageAlt="Business Platform"
-      />
-    </div>
-    <div className="p-4">
-      <LeftPhoto
-        title="Streamline Your Business with Our SaaS Platform"
-        description="Our all-in-one SaaS platform helps you manage your business efficiently, from customer relationships to financial reporting. Experience the power of seamless integration and automation."
-        buttonText="Get Started"
-        buttonLink="#"
-        imageSrc="/next.svg"
-        imageAlt="Business Platform"
-      />
-    </div>
-    <div className="p-4">
-      <RightPhoto
-        title="Streamline Your Business with Our SaaS Platform"
-        description="Our all-in-one SaaS platform helps you manage your business efficiently, from customer relationships to financial reporting. Experience the power of seamless integration and automation."
-        buttonText="Get Started"
-        buttonLink="#"
-        imageSrc="/vercel.svg"
-        imageAlt="Business Platform"
-      />
-    </div>
+        <RightPhoto
+          title="Streamline Your Business with Our SaaS Platform"
+          description="Our all-in-one SaaS platform helps you manage your business efficiently, from customer relationships to financial reporting. Experience the power of seamless integration and automation."
+          buttonText="Get Started"
+          buttonLink="#"
+          imageSrc="/Zenith.png"
+          imageAlt="Business Platform"
+        />
+      </div>
+      <div className="p-4">
+        <LeftPhoto
+          title="Streamline Your Business with Our SaaS Platform"
+          description="Our all-in-one SaaS platform helps you manage your business efficiently, from customer relationships to financial reporting. Experience the power of seamless integration and automation."
+          buttonText="Get Started"
+          buttonLink="#"
+          imageSrc="/next.svg"
+          imageAlt="Business Platform"
+        />
+      </div>
+      <div className="p-4">
+        <RightPhoto
+          title="Streamline Your Business with Our SaaS Platform"
+          description="Our all-in-one SaaS platform helps you manage your business efficiently, from customer relationships to financial reporting. Experience the power of seamless integration and automation."
+          buttonText="Get Started"
+          buttonLink="#"
+          imageSrc="/vercel.svg"
+          imageAlt="Business Platform"
+        />
+      </div>
     </main>
   );
 }
