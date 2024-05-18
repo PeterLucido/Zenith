@@ -1,46 +1,50 @@
 'use client'
-import { useEffect, useRef } from "react";
+import { useEffect, useRef, useState } from "react";
+import Image from 'next/image';
 import Header from "../components/header";
 import RightPhoto from '../components/rightphoto';
 import LeftPhoto from '../components/leftphoto';
 import ButtonComponent from '../components/callbutton';
-import Image from 'next/image';
 
 export default function Home() {
+  const [isMobile, setIsMobile] = useState(false);
   const videoRef = useRef<HTMLVideoElement>(null);
   const timeoutRef = useRef<number | null>(null);
 
   useEffect(() => {
-    const video = videoRef.current;
-    if (video) {
-      const handleScroll = () => {
+    const handleScroll = () => {
+      const video = videoRef.current;
+      if (video) {
         if (timeoutRef.current !== null) {
           clearTimeout(timeoutRef.current);
         }
 
         video.playbackRate = 1 + window.scrollY / window.innerHeight;
-
         video.play();
 
         timeoutRef.current = window.setTimeout(() => {
           video.pause();
         }, 180);
-      };
+      }
+    };
 
-      window.addEventListener("scroll", handleScroll);
+    window.addEventListener("scroll", handleScroll);
 
-      return () => {
-        if (timeoutRef.current !== null) {
-          clearTimeout(timeoutRef.current);
-        }
-        window.removeEventListener("scroll", handleScroll);
-      };
-    } else {
-      console.error('Video element not found');
-    }
+    return () => {
+      if (timeoutRef.current !== null) {
+        clearTimeout(timeoutRef.current);
+      }
+      window.removeEventListener("scroll", handleScroll);
+    };
   }, []);
 
-  const isMobile = /iPhone|iPad|iPod|Android/i.test(navigator.userAgent);
+  useEffect(() => {
+    const checkIfMobile = () => {
+      setIsMobile(/iPhone|iPad|iPod|Android/i.test(navigator.userAgent));
+    };
+
+    checkIfMobile();
+  }, []);
 
   return (
     <main className="flex min-h-screen flex-col items-center justify-between p-24 relative">
@@ -55,12 +59,13 @@ export default function Home() {
       </video>
       {isMobile && (
         <Image
-        id="fallback-image"
-        src="/EVELO.png"
-        alt="Background Image"
-        layout="fill"
-        objectFit="cover"
-      />
+          id="fallback-image"
+          src="/fallback.jpg"
+          alt="Background Image"
+          layout="fill"
+          objectFit="cover"
+          className="fixed top-0 left-0 w-full h-full z-[-1] pointer-events-none"
+        />
       )}
       <Header />
       <div className="fixed top-0 left-0 w-full h-full bg-black opacity-40 z-[-1]"></div>
