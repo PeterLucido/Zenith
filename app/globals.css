@@ -31,3 +31,9 @@ body {
     text-wrap: balance;
   }
 }
+
+@layer components {
+  .animate-move-border {
+      animation: move-border 4s linear infinite;
+  }
+}
