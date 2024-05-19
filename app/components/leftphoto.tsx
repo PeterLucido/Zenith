@@ -12,7 +12,7 @@ interface LeftPhotoProps {
 
 const LeftPhoto = ({ title, description, buttonText, buttonLink, imageSrc, imageAlt }: LeftPhotoProps) => {
   return (
-    <section className="flex items-center justify-between h-96 mx-auto p-8 bg-black bg-opacity-80 text-white rounded-xl shadow-lg border border-gray-700 mt-4">
+    <section className="flex items-center justify-between h-96 mx-auto p-8 bg-black bg-opacity-80 text-white rounded-xl shadow-lg border border-gray-700 mt-4 w-5/6">
       <div className="w-1/2 flex justify-start">
         <Image src={imageSrc} alt={imageAlt} width={500} height={300} className="rounded-lg" />
       </div>
