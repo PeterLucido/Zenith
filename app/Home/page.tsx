@@ -12,6 +12,8 @@ export default function Home() {
   const [videoLoaded, setVideoLoaded] = useState(false);
   const videoRef = useRef<HTMLVideoElement>(null);
   const timeoutRef = useRef<number | null>(null);
+  // adding comment to push a small change
+  // another comment
 
   useEffect(() => {
     console.log("Component mounted");
