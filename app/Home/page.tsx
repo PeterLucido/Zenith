@@ -12,12 +12,8 @@ export default function Home() {
   const [videoLoaded, setVideoLoaded] = useState(false);
   const videoRef = useRef<HTMLVideoElement>(null);
   const timeoutRef = useRef<number | null>(null);
-  // adding comment to push a small change
-  // another comment
 
   useEffect(() => {
-    console.log("Component mounted");
-
     const handleScroll = () => {
       const video = videoRef.current;
       if (video) {
@@ -50,28 +46,22 @@ export default function Home() {
     };
 
     checkIfMobile();
-    console.log("Mobile check performed, isMobile:", isMobile);
   }, []);
 
   useEffect(() => {
     const video = videoRef.current;
 
     if (video) {
-      console.log("Video element found");
-
       const handleLoadedData = () => {
-        console.log('Video loaded data');
         setVideoLoaded(true);
       };
 
       const handleVideoError = () => {
-        console.error('Error loading video', video.error);
-        setVideoLoaded(true); // Fallback to avoid stuck loading
+        setVideoLoaded(true);
       };
 
       const handleVideoAbort = () => {
-        console.warn('Video load aborted');
-        setVideoLoaded(true); // Fallback to avoid stuck loading
+        setVideoLoaded(true);
       };
 
       video.addEventListener('loadeddata', handleLoadedData);
