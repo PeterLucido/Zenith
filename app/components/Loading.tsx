@@ -7,8 +7,8 @@ const Loading = () => {
       <Image
         src="/Zenith.png"
         alt="Loading Logo"
-        width={550}
-        height={550}
+        width={555}
+        height={555}
         className="animate-fade"
       />
     </div>
