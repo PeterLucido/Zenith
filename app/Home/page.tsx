@@ -1,7 +1,7 @@
 'use client';
 import { useEffect, useRef, useState } from 'react';
 import Image from 'next/image';
-import Loading from '../components/loading';
+import Loading from '../components/Loading2';
 import Header from '../components/header';
 import RightPhoto from '../components/rightphoto';
 import LeftPhoto from '../components/leftphoto';
