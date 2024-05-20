@@ -1,113 +1,160 @@
-import Image from "next/image";
+'use client';
+import { useEffect, useRef, useState } from 'react';
+import Image from 'next/image';
+import Loading from '.././/app/components/Loading2';
+import Header from '.././/app/components/header';
+import RightPhoto from '.././/app/components/rightphoto';
+import LeftPhoto from '.././/app/components/leftphoto';
+import ButtonComponent from '.././/app/components/callbutton';
 
 export default function Home() {
+  const [isMobile, setIsMobile] = useState(false);
+  const [videoLoaded, setVideoLoaded] = useState(false);
+  const videoRef = useRef<HTMLVideoElement>(null);
+  const timeoutRef = useRef<number | null>(null);
+
+  useEffect(() => {
+    const handleScroll = () => {
+      const video = videoRef.current;
+      if (video) {
+        if (timeoutRef.current !== null) {
+          clearTimeout(timeoutRef.current);
+        }
+
+        video.playbackRate = 1 + window.scrollY / window.innerHeight;
+        video.play();
+
+        timeoutRef.current = window.setTimeout(() => {
+          video.pause();
+        }, 180);
+      }
+    };
+
+    window.addEventListener('scroll', handleScroll);
+
+    return () => {
+      if (timeoutRef.current !== null) {
+        clearTimeout(timeoutRef.current);
+      }
+      window.removeEventListener('scroll', handleScroll);
+    };
+  }, []);
+
+  useEffect(() => {
+    const checkIfMobile = () => {
+      setIsMobile(/iPhone|iPad|iPod|Android/i.test(navigator.userAgent));
+    };
+
+    checkIfMobile();
+  }, []);
+
+  useEffect(() => {
+    const video = videoRef.current;
+
+    if (video) {
+      const handleLoadedData = () => {
+        setVideoLoaded(true);
+      };
+
+      const handleVideoError = () => {
+        setVideoLoaded(true);
+      };
+
+      const handleVideoAbort = () => {
+        setVideoLoaded(true);
+      };
+
+      video.addEventListener('loadeddata', handleLoadedData);
+      video.addEventListener('error', handleVideoError);
+      video.addEventListener('abort', handleVideoAbort);
+
+      // Fallback timeout in case events don't fire
+      const fallbackTimeout = setTimeout(() => {
+        if (!videoLoaded) {
+          console.log('Fallback: video load timeout');
+          setVideoLoaded(true);
+        }
+      }, 5000); // 5 seconds timeout
+
+      return () => {
+        clearTimeout(fallbackTimeout);
+        video.removeEventListener('loadeddata', handleLoadedData);
+        video.removeEventListener('error', handleVideoError);
+        video.removeEventListener('abort', handleVideoAbort);
+      };
+    } else {
+      console.log("Video element not found");
+    }
+  }, [videoLoaded]);
+
   return (
-    <main className="flex min-h-screen flex-col items-center justify-between p-24">
-      <div className="z-10 w-full max-w-5xl items-center justify-between font-mono text-sm lg:flex">
-        <p className="fixed left-0 top-0 flex w-full justify-center border-b border-gray-300 bg-gradient-to-b from-zinc-200 pb-6 pt-8 backdrop-blur-2xl dark:border-neutral-800 dark:bg-zinc-800/30 dark:from-inherit lg:static lg:w-auto  lg:rounded-xl lg:border lg:bg-gray-200 lg:p-4 lg:dark:bg-zinc-800/30">
-          Get started by editing&nbsp;
-          <code className="font-mono font-bold">app/page.tsx</code>
-        </p>
-        <div className="fixed bottom-0 left-0 flex h-48 w-full items-end justify-center bg-gradient-to-t from-white via-white dark:from-black dark:via-black lg:static lg:size-auto lg:bg-none">
-          <a
-            className="pointer-events-none flex place-items-center gap-2 p-8 lg:pointer-events-auto lg:p-0"
-            href="https://vercel.com?utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            By{" "}
-            <Image
-              src="/vercel.svg"
-              alt="Vercel Logo"
-              className="dark:invert"
-              width={100}
-              height={24}
-              priority
-            />
-          </a>
-        </div>
-      </div>
-
-      <div className="relative z-[-1] flex place-items-center before:absolute before:h-[300px] before:w-full before:-translate-x-1/2 before:rounded-full before:bg-gradient-radial before:from-white before:to-transparent before:blur-2xl before:content-[''] after:absolute after:-z-20 after:h-[180px] after:w-full after:translate-x-1/3 after:bg-gradient-conic after:from-sky-200 after:via-blue-200 after:blur-2xl after:content-[''] before:dark:bg-gradient-to-br before:dark:from-transparent before:dark:to-blue-700 before:dark:opacity-10 after:dark:from-sky-900 after:dark:via-[#0141ff] after:dark:opacity-40 sm:before:w-[480px] sm:after:w-[240px] before:lg:h-[360px]">
+    <div>
+      {!videoLoaded && <Loading />}
+      <video
+        ref={videoRef}
+        className={`fixed top-0 left-0 w-full h-full object-cover z-[-1] ${isMobile ? 'pointer-events-none' : ''}`}
+        src="/BackgroundVideo2_optimized2.mp4"
+        muted
+        playsInline
+        preload="auto"
+      >
+        <source src="/BackgroundVideo2.mp4" type="video/mp4" />
+        <source src="/BackgroundVideo2.webm" type="video/webm" />
+        <source src="/BackgroundVideo2.ogv" type="video/ogg" />
+        Your browser does not support the video tag.
+      </video>
+      {isMobile && (
         <Image
-          className="relative dark:drop-shadow-[0_0_0.3rem_#ffffff70] dark:invert"
-          src="/next.svg"
-          alt="Next.js Logo"
-          width={180}
-          height={37}
-          priority
+          id="fallback-image"
+          src="/fallback.jpg"
+          alt="Background Image"
+          layout="fill"
+          objectFit="cover"
+          className="fixed top-0 left-0 w-full h-full z-[-1] pointer-events-none"
         />
-      </div>
-
-      <div className="mb-32 grid text-center lg:mb-0 lg:w-full lg:max-w-5xl lg:grid-cols-4 lg:text-left">
-        <a
-          href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-          className="group rounded-lg border border-transparent px-5 py-4 transition-colors hover:border-gray-300 hover:bg-gray-100 hover:dark:border-neutral-700 hover:dark:bg-neutral-800/30"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <h2 className="mb-3 text-2xl font-semibold">
-            Docs{" "}
-            <span className="inline-block transition-transform group-hover:translate-x-1 motion-reduce:transform-none">
-              -&gt;
-            </span>
-          </h2>
-          <p className="m-0 max-w-[30ch] text-sm opacity-50">
-            Find in-depth information about Next.js features and API.
-          </p>
-        </a>
-
-        <a
-          href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          className="group rounded-lg border border-transparent px-5 py-4 transition-colors hover:border-gray-300 hover:bg-gray-100 hover:dark:border-neutral-700 hover:dark:bg-neutral-800/30"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <h2 className="mb-3 text-2xl font-semibold">
-            Learn{" "}
-            <span className="inline-block transition-transform group-hover:translate-x-1 motion-reduce:transform-none">
-              -&gt;
-            </span>
-          </h2>
-          <p className="m-0 max-w-[30ch] text-sm opacity-50">
-            Learn about Next.js in an interactive course with&nbsp;quizzes!
-          </p>
-        </a>
-
-        <a
-          href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-          className="group rounded-lg border border-transparent px-5 py-4 transition-colors hover:border-gray-300 hover:bg-gray-100 hover:dark:border-neutral-700 hover:dark:bg-neutral-800/30"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <h2 className="mb-3 text-2xl font-semibold">
-            Templates{" "}
-            <span className="inline-block transition-transform group-hover:translate-x-1 motion-reduce:transform-none">
-              -&gt;
-            </span>
-          </h2>
-          <p className="m-0 max-w-[30ch] text-sm opacity-50">
-            Explore starter templates for Next.js.
-          </p>
-        </a>
-
-        <a
-          href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-          className="group rounded-lg border border-transparent px-5 py-4 transition-colors hover:border-gray-300 hover:bg-gray-100 hover:dark:border-neutral-700 hover:dark:bg-neutral-800/30"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <h2 className="mb-3 text-2xl font-semibold">
-            Deploy{" "}
-            <span className="inline-block transition-transform group-hover:translate-x-1 motion-reduce:transform-none">
-              -&gt;
-            </span>
-          </h2>
-          <p className="m-0 max-w-[30ch] text-balance text-sm opacity-50">
-            Instantly deploy your Next.js site to a shareable URL with Vercel.
-          </p>
-        </a>
-      </div>
-    </main>
+      )}
+      {videoLoaded && (
+        <div className="relative z-10">
+          <Header />
+          <div className="fixed top-0 left-0 w-full h-full bg-black opacity-40 z-[-1]"></div>
+          <section className="relative z-10 flex flex-col items-center justify-center h-full text-white mt-28">
+            <h1 className="text-7xl font-bold pt-60">Launching Dreams into Reality</h1>
+            <h2 className="text-4xl font-bold pt-4">Transforming your greatest visions into innovative software solutions.</h2>
+            <ButtonComponent buttonLink="6367952482" buttonText="Call Today" onClick={() => console.log('Button clicked')} />
+            <div style={{ height: '45vh' }}></div>
+          </section>
+          <div className="p-4">
+            <RightPhoto
+              title="Streamline Your Business with Our SaaS Platform"
+              description="Our all-in-one SaaS platform helps you manage your business efficiently, from customer relationships to financial reporting. Experience the power of seamless integration and automation."
+              buttonText="Get Started"
+              buttonLink="#"
+              imageSrc="/Zenith.png"
+              imageAlt="Business Platform"
+            />
+          </div>
+          <div className="p-4">
+            <LeftPhoto
+              title="Streamline Your Business with Our SaaS Platform"
+              description="Our all-in-one SaaS platform helps you manage your business efficiently, from customer relationships to financial reporting. Experience the power of seamless integration and automation."
+              buttonText="Get Started"
+              buttonLink="#"
+              imageSrc="/next.svg"
+              imageAlt="Business Platform"
+            />
+          </div>
+          <div className="p-4">
+            <RightPhoto
+              title="Streamline Your Business with Our SaaS Platform"
+              description="Our all-in-one SaaS platform helps you manage your business efficiently, from customer relationships to financial reporting. Experience the power of seamless integration and automation."
+              buttonText="Get Started"
+              buttonLink="#"
+              imageSrc="/vercel.svg"
+              imageAlt="Business Platform"
+            />
+          </div>
+        </div>
+      )}
+    </div>
   );
 }
