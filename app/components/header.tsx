@@ -1,5 +1,6 @@
 import React from 'react';
 import Image from 'next/image';
+import Link from 'next/link';
 
 const Header = () => {
   return (
@@ -17,9 +18,9 @@ const Header = () => {
       {/* Centered Navigation */}
       <nav className="flex-grow">
         <ul className="flex justify-center items-center space-x-8 text-2xl">
-          <li className="cursor-pointer hover:underline hover:text-[#29ABE2]">Software</li>
-          <li className="cursor-pointer hover:underline hover:text-[#29ABE2]">Networking</li>
-          <li className="cursor-pointer hover:underline hover:text-[#29ABE2]">Partners</li>
+          <li className="cursor-pointer hover:underline hover:text-[#29ABE2]"><Link href="/Software">Software</Link></li>
+          <li className="cursor-pointer hover:underline hover:text-[#29ABE2]"><Link href="/Networking">Networking</Link></li>
+          <li className="cursor-pointer hover:underline hover:text-[#29ABE2]"><Link href="/Partners">Partners</Link></li>
         </ul>
       </nav>
       {/* Contact Button with fixed width */}
@@ -27,7 +28,7 @@ const Header = () => {
         <button
           className="bg-[#FF00FF] hover:bg-[#FF66FF] text-white text-2xl py-2 px-4 rounded-md transition-colors"
         >
-          Contact
+          <Link href="/Contact">Contact</Link>
         </button>
       </div>
     </header>

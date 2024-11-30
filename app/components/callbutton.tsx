@@ -5,6 +5,7 @@ interface ButtonComponentProps {
     buttonLink?: string; // Optional in case no link is provided
     buttonText: string;
     className?: string; // Allow custom styling via className
+    Link?: any;
 }
 
 const ButtonComponent = ({ onClick, buttonLink, buttonText, className }: ButtonComponentProps) => {

@@ -7,7 +7,6 @@ import ButtonComponent from '../app/components/callbutton';
 import LogoParticles from './components/LogoParticles';
 import HeroSection from './components/HeroSection';
 import ContactForm from './components/ContactForm';
-import ContactBox from './components/ContactBox';
 import Footer from './components/Footer';
 
 export default function Home() {
@@ -30,7 +29,7 @@ export default function Home() {
         <HeroSection />
           <ButtonComponent
                 className="absolute z-50 bg-[#FF00FF] hover:bg-[#FF66FF] text-white text-2xl py-2 px-4 rounded-md  transition-colors top-[37rem] left-[28rem]"
-                buttonLink="6367952482"
+                buttonLink="/Contact"
                 buttonText="Contact"
                 onClick={() => console.log('Button clicked')}
               />
