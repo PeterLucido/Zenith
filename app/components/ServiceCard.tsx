@@ -1,7 +1,7 @@
 import React from 'react';
 import Image from 'next/image';
 
-interface LeftPhotoProps {
+interface ServiceCardProps {
   title: string;
   description: string;
   buttonText: string;
@@ -10,11 +10,11 @@ interface LeftPhotoProps {
   imageAlt: string;
 }
 
-const LeftPhoto = ({ title, description, buttonText, buttonLink, imageSrc, imageAlt }: LeftPhotoProps) => {
+const ServiceCard = ({ title, description, buttonText, buttonLink, imageSrc, imageAlt }: ServiceCardProps) => {
   return (
-    <section className="flex items-center justify-between h-96 mx-auto p-8 bg-black bg-opacity-80 text-white rounded-xl shadow-lg border border-gray-700 mt-4 w-11/12">
+    <section className="flex items-center justify-between h-96 mx-auto p-8 bg-black bg-opacity-80 text-white rounded-xl shadow-lg border border-gray-700 mt-4 w-5/6">
       <div className="w-1/2 flex justify-start">
-        <Image src={imageSrc} alt={imageAlt} width={500} height={300} className="rounded-lg" />
+        <Image src={imageSrc} alt={imageAlt} width={300} height={300} className="rounded-lg" />
       </div>
       <div className="w-1/2 pl-8 text-right">
         <h2 className="text-4xl font-bold mb-4">{title}</h2>
@@ -25,6 +25,6 @@ const LeftPhoto = ({ title, description, buttonText, buttonLink, imageSrc, image
       </div>
     </section>
   );
-};
+}
 
-export default LeftPhoto;
+export default ServiceCard;

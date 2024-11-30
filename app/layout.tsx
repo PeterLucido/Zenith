@@ -5,8 +5,8 @@ import "./globals.css";
 const inter = Inter({ subsets: ["latin"] });
 
 export const metadata: Metadata = {
-  title: "ZENITH",
-  description: "Zenith Software",
+  title: "VELOXITI",
+  description: "Veloxiti Software",
 };
 
 export default function RootLayout({
@@ -16,7 +16,7 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <link rel="icon" href="/ZenithFavicon.png" sizes="any" />
+      <link rel="icon" href="/icon.png" sizes="any" />
       <body className={inter.className}>{children}</body>
     </html>
   );

@@ -2,26 +2,25 @@ import React from 'react';
 
 interface ButtonComponentProps {
     onClick?: () => void;
-    buttonLink: string;
+    buttonLink?: string; // Optional in case no link is provided
     buttonText: string;
+    className?: string; // Allow custom styling via className
 }
 
-const ButtonComponent = ({ onClick, buttonLink, buttonText }: ButtonComponentProps) => {
+const ButtonComponent = ({ onClick, buttonLink, buttonText, className }: ButtonComponentProps) => {
     return (
-        <div className="flex w-full max-w-lg items-center justify-center mt-4">
-            <div className="relative z-10 flex cursor-pointer items-center overflow-hidden rounded-xl border border-black p-[1.5px]">
-                <div className="absolute inset-0 flex items-center justify-center">
-                    <div className="animate-rotate h-full w-full rounded-lg bg-[conic-gradient(#FF00FF_20deg,transparent_120deg)]"></div>
-                </div>
-                <button
-                    className="relative z-20 block rounded-lg bg-black px-8 py-3 text-center text-xl text-white shadow-2xl transition duration-200 hover:bg-pink-600"
-                    onClick={onClick}
-                >
-                    {buttonText}
-                </button>
-            </div>
+        <div className="flex w-full max-w-lg items-center justify-center mt-4 z-80">
+            <a
+                href={buttonLink || '#'}
+                target={buttonLink?.startsWith('http') || buttonLink?.startsWith('tel') ? '_blank' : undefined} // Open external links in a new tab
+                rel="noopener noreferrer"
+                onClick={onClick}
+                className={`cursor-pointer ${className}`}
+            >
+                {buttonText}
+            </a>
         </div>
     );
-}
+};
 
 export default ButtonComponent;
